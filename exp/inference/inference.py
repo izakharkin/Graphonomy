@@ -22,6 +22,8 @@ from dataloaders import custom_transforms as tr
 import argparse
 import torch.nn.functional as F
 
+import matplotlib.pyplot as plt
+
 label_colours = [(0,0,0)
                 , (128,0,0), (255,0,0), (0,85,0), (170,0,51), (255,85,0), (0,0,85), (0,119,221), (85,85,0), (0,85,85), (85,51,0), (52,86,128), (0,128,0)
                 , (0,0,255), (51,170,221), (0,255,255), (85,255,170), (170,255,85), (255,255,0), (255,170,0)]
@@ -163,12 +165,22 @@ def inference(net, img_path='', output_path='./', output_name='f', use_gpu=True)
     results = predictions.cpu().numpy()
     vis_res = decode_labels(results)
 
-    parsing_im = Image.fromarray(vis_res[0])
-    parsing_im.save(output_path+'/{}.png'.format(output_name))
-    cv2.imwrite(output_path+'/{}_gray.png'.format(output_name), results[0, :, :])
-
+#     parsing_im = Image.fromarray(vis_res[0])
+#     parsing_im.save(output_path+'/{}.png'.format(output_name))
+#     cv2.imwrite(output_path+'/{}_gray.png'.format(output_name), results[0, :, :])
+    
+    probs = F.softmax(outputs_final[0]).cpu().detach().numpy()
+    probs_cloth1 = probs[[5,6,7]].sum(axis=0, keepdims=True).transpose(1,2,0)
+    probs_cloth2 = probs[[2,9,12]].transpose(1,2,0)
+    probs_cloth = np.concatenate([probs_cloth2, probs_cloth1], axis=-1)
+    probs_cloth[...,3] = probs_cloth.sum(axis=-1)
+    probs_cloth = probs_cloth.clip(0., 1.).copy(order='C')
+    plt.imsave(output_path+'/{}.png'.format(output_name), probs_cloth)
+    
     end_time = timeit.default_timer()
     print('time used for the multi-scale image inference' + ' is :' + str(end_time - start_time))
+
+    
 
 if __name__ == '__main__':
     '''argparse begin'''
@@ -200,4 +212,4 @@ if __name__ == '__main__':
         raise RuntimeError('must use the gpu!!!!')
 
     inference(net=net, img_path=opts.img_path,output_path=opts.output_path , output_name=opts.output_name, use_gpu=use_gpu)
-
+    
