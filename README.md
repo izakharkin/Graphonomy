@@ -59,6 +59,18 @@ python exp/inference/inference.py  \
 --output_name /output_file_name
 ``` 
 
+### Inference (point_based_clothing)
+First, get the [universal model weights](https://drive.google.com/file/d/1Aft446fk0pECbLAiBMMMqddcv68_Cm5C/view?usp=sharing) and place them in `data/pretrained_model/` folder. We modified the original `inference.py` script for it to output the segmentation mask in the format of the [point_based_clothing](https://github.com/saic-vul/point_based_clothing) repo:
+
+```shell
+# Example of inference
+python exp/inference/inference.py  \
+--loadmodel data/pretrained_model/universal_trained.pth \
+--img_path ./img/messi.jpg \
+--output_path ./img/ \
+--output_name /output_file_name
+``` 
+
 ### Training
 #### Transfer learning
 1. Download the Pascal pretrained model(available soon).
@@ -93,7 +105,7 @@ Specify the specific model. And we provide the final model that you can download
 
 |Model|Google Cloud|Baidu Yun|
 |--------|--------------|-----------|
-|Universal| [Download](https://drive.google.com/file/d/1sWJ54lCBFnzCNz5RTCGQmkVovkY9x8_D/view?usp=sharing)|Available soon|
+|Universal| [Download](https://drive.google.com/file/d/1Aft446fk0pECbLAiBMMMqddcv68_Cm5C/view?usp=sharing)|Available soon|
 
 ### Todo:
 - [ ] release pretrained and trained models
