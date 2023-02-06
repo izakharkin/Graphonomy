@@ -60,7 +60,7 @@ python exp/inference/inference.py  \
 ``` 
 
 ### Inference (point_based_clothing)
-First, get the [universal model weights](https://drive.google.com/file/d/1Aft446fk0pECbLAiBMMMqddcv68_Cm5C/view?usp=sharing) and place them in `data/pretrained_model/` folder. We modified the original `inference.py` script for it to output the segmentation mask in the format of the [point_based_clothing](https://github.com/saic-vul/point_based_clothing) repo:
+First, get the [universal model weights](https://drive.google.com/file/d/1jO35B5GVQfJQWuL_KjYkVdc9bmRXnQJ4/view?usp=share_link) and place them in `data/pretrained_model/` folder. We modified the original `inference.py` script for it to output the segmentation mask in the format of the [point_based_clothing](https://github.com/saic-vul/point_based_clothing) repo:
 
 ```shell
 # Example of inference
